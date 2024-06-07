@@ -3,7 +3,7 @@
   <div class= "black-bg" v-if="mordal_state == true">
     <div class= "white-bg">
       <h4> 상세페이지임 </h4>
-      <p> 상세페이지 내용임 </p>
+      <p> {{product_content}} </p>
       <button @click="mordal_off"> 닫기 </button>
     </div>
   </div>
@@ -14,11 +14,9 @@
   </div>
 
   <div v-for="(product, i) in products" :key="i">
-    <img :src="getImageSrc(i)" class="room-img">
-    <h4 @click="mordal_on"> {{ product.name }} </h4>
+    <img :src="product.image" class="room-img">
+    <h4 @click="mordal_on(product.content)"> {{ product.title }} </h4>
     <p>{{ product.price }} 만원</p>
-    <button @click="counterIncrease"> 허위매물신고 </button> 
-    <!-- <span> 신고수 : {{counters[0]}} </span> -->
   </div>
 </template>
 
@@ -31,29 +29,20 @@ export default {
   // 데이터 보관함
   data(){
     return {
-      data : data,
       메뉴들 : ['Home', 'Shop', 'About'],
-      products : [
-                  {name : '역삼동원룸', price : 10 , counter : 0 },
-                  {name : '천호동원룸', price : 20 , counter : 0 },
-                  {name : '마포구원룸', price : 30 , counter : 0 }
-                ],
+      products : data,
+      product_content : null,
       mordal_state : false,
     }
   },
   methods : {
-    counterIncrease(){
-      this.counters++;
-    },
-    mordal_on(){
+    mordal_on(content){
+      this.product_content = content;
       this.mordal_state = true;
     },
     mordal_off(){
       this.mordal_state = false;
     },
-    getImageSrc(index) {
-      return require(`./assets/room${index}.jpg`);
-    }
   },
   components: {
 
