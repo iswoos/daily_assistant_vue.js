@@ -24,11 +24,14 @@
 
 <script>
 
+import data from './assets/oneroom.js';
+
 export default {
   name: 'App',
   // 데이터 보관함
   data(){
     return {
+      data : data,
       메뉴들 : ['Home', 'Shop', 'About'],
       products : [
                   {name : '역삼동원룸', price : 10 , counter : 0 },
