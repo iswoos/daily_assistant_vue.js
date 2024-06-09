@@ -1,14 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import { createMemoryHistory, createRouter } from 'vue-router'
-import ProductPage from './pages/ProductPage.vue'
-
-const routes = [{ path: '/a', component: ProductPage }]
-
-const router = createRouter({
-  history: createMemoryHistory(),
-  routes,
-})
+// 생성한 뷰 라우터 받아오기
+import { router } from './router/index.js'
 
 createApp(App).use(router).mount('#app')

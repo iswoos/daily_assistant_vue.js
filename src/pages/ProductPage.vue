@@ -12,18 +12,19 @@
   </div>
 
   <div v-for="(product, i) in products" :key="i">
-    <img :src="product.image" class="room-img" />
-    <h4 @click="mordal_on(product.content)">{{ product.title }}</h4>
-    <p @click="onClickGetData">{{ product.price }} 만원</p>
+    <ProductItem :product="product" />
   </div>
 </template>
 
 <script>
 import dummyData from '../assets/oneroom'
-
+import ProductItem from '../components/product/ProductItem'
 export default {
   name: 'ProductPage',
   // 데이터 보관함
+  components: {
+    ProductItem,
+  },
   data() {
     return {
       메뉴들: ['Home', 'Shop', 'About'],
@@ -33,12 +34,6 @@ export default {
       axios_data: null,
       page: 1,
     }
-  },
-
-  watch: {
-    page(current, prev) {
-      console.log({ prev, current })
-    },
   },
   methods: {
     mordal_on(content) {
@@ -51,7 +46,6 @@ export default {
 
     async onClickGetData() {
       try {
-        this.page = 2
         // const { data } = await getProduct(this.page)
         console.log('axios 통신성공')
         // console.log(data)
@@ -63,7 +57,6 @@ export default {
       }
     },
   },
-  components: {},
 }
 </script>
 
