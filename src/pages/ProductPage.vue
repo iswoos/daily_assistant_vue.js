@@ -1,29 +1,30 @@
 <template>
-  <div class="black-bg" v-if="mordal_state == true">
-    <div class="white-bg">
-      <h4>상세페이지임</h4>
-      <p>{{ product_content }}</p>
-      <button @click="mordal_off">닫기</button>
-    </div>
-  </div>
+  <ProductDetailModal
+    :product="product"
+    :product_content="product_content"
+    :mordal_state="mordal_state"
+    @mordal_off="mordal_off"
+  />
 
   <div class="menu">
     <a v-for="(작명, i) in 메뉴들" :key="i">{{ 작명 }}</a>
   </div>
 
   <div v-for="(product, i) in products" :key="i">
-    <ProductItem :product="product" />
+    <ProductItem :product="product" @mordal-on="mordal_on" />
   </div>
 </template>
 
 <script>
 import dummyData from '../assets/oneroom'
 import ProductItem from '../components/product/ProductItem'
+import ProductDetailModal from '@/components/product/ProductDetailModal.vue'
+
 export default {
   name: 'ProductPage',
-  // 데이터 보관함
   components: {
     ProductItem,
+    ProductDetailModal,
   },
   data() {
     return {
@@ -43,13 +44,12 @@ export default {
     mordal_off() {
       this.mordal_state = false
     },
-
     async onClickGetData() {
       try {
-        // const { data } = await getProduct(this.page)
+        // const { data } = await getProduct(this.page);
         console.log('axios 통신성공')
-        // console.log(data)
-        // this.axios_data = data
+        // console.log(data);
+        // this.axios_data = data;
 
         console.log(this.axios_data)
       } catch (e) {
@@ -61,50 +61,5 @@ export default {
 </script>
 
 <style>
-body {
-  margin: 0;
-}
-
-div {
-  box-sizing: border-box;
-}
-
-.black-bg {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  padding: 20px;
-}
-
-.white-bg {
-  width: 100%;
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-}
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-.menu {
-  background: darkslateblue;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-.menu a {
-  color: white;
-  padding: 10px;
-}
-
-.room-img {
-  width: 100%;
-  margin-top: 40px;
-}
+/* 스타일 생략 */
 </style>
