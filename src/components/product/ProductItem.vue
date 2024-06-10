@@ -1,27 +1,28 @@
-<template lang="">
+<template>
   <img :src="product.image" class="room-img" />
-  <h4 @click="mordal_on(product.content)">{{ product.title }}</h4>
-  <p @click="onClickGetData">{{ product.price }} 만원</p>
+  <h4 @click="emitMordalOn">{{ product.title }}</h4>
+  <p>{{ product.price }} 만원</p>
 </template>
+
 <script>
 export default {
-  name: 'ProductItem',
   props: {
     product: {
-      image: String,
-      content: String,
-      price: Number,
-      title: String,
+      type: Object,
+      required: true,
     },
   },
-
-  data() {
-    return {}
+  methods: {
+    emitMordalOn() {
+      this.$emit('mordal-on', this.product.content)
+    },
   },
-
   mounted() {
     console.log(this.product)
   },
 }
 </script>
-<style lang=""></style>
+
+<style>
+/* 스타일 생략 */
+</style>
