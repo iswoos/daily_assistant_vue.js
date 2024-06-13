@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import dummyData from '../assets/oneroom'
 import ProductItem from '../components/product/ProductItem'
 import ProductDetailModal from '@/components/product/ProductDetailModal.vue'
@@ -26,36 +27,47 @@ export default {
     ProductItem,
     ProductDetailModal,
   },
-  data() {
-    return {
-      메뉴들: ['Home', 'Shop', 'About'],
-      products: dummyData,
-      product_content: null,
-      mordal_state: false,
-      axios_data: null,
-      page: 1,
+  setup() {
+    const 메뉴들 = ref(['Home', 'Shop', 'About'])
+    const products = ref(dummyData)
+    const product_content = ref(null)
+    const mordal_state = ref(false)
+    const axios_data = ref(null)
+    const page = ref(1)
+
+    const mordal_on = (content) => {
+      product_content.value = content
+      mordal_state.value = true
     }
-  },
-  methods: {
-    mordal_on(content) {
-      this.product_content = content
-      this.mordal_state = true
-    },
-    mordal_off() {
-      this.mordal_state = false
-    },
-    async onClickGetData() {
+
+    const mordal_off = () => {
+      mordal_state.value = false
+    }
+
+    const onClickGetData = async () => {
       try {
-        // const { data } = await getProduct(this.page);
+        // const { data } = await getProduct(page.value);
         console.log('axios 통신성공')
         // console.log(data);
-        // this.axios_data = data;
+        // axios_data.value = data;
 
-        console.log(this.axios_data)
+        console.log(axios_data.value)
       } catch (e) {
         console.error(e)
       }
-    },
+    }
+
+    return {
+      메뉴들,
+      products,
+      product_content,
+      mordal_state,
+      axios_data,
+      page,
+      mordal_on,
+      mordal_off,
+      onClickGetData,
+    }
   },
 }
 </script>
