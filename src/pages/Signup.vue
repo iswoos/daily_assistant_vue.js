@@ -31,6 +31,8 @@ import axios from 'axios'
 export default {
   name: 'SignupPage',
   setup() {
+    const router = useRouter()
+
     const form = reactive({
       username: '',
       password: '',
@@ -46,8 +48,6 @@ export default {
           username: form.username,
           password: form.password,
         })
-
-        const router = useRouter()
 
         // localStorage.setItem('token', response.data.token)
 

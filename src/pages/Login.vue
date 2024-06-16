@@ -27,12 +27,15 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 import axios from 'axios'
 
 export default {
   name: 'LoginPage',
   setup() {
+    const router = useRouter()
+
     const form = reactive({
       username: '',
       password: '',
@@ -42,13 +45,12 @@ export default {
 
     const login = async () => {
       try {
-        const response = await axios.post(
-          'http://localhost:8080/authenticate',
-          {
-            username: form.username,
-            password: form.password,
-          },
-        )
+        router.push('/main')
+
+        const response = await axios.post('http://localhost:8080/login', {
+          username: form.username,
+          password: form.password,
+        })
 
         localStorage.setItem('token', response.data.token)
 
