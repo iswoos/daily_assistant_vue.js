@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 import axios from 'axios'
 
@@ -37,17 +38,18 @@ export default {
 
     const error = ref('')
 
-    const login = async () => {
+    const signup = async () => {
       try {
-        const response = await axios.post(
-          'http://localhost:8080/authenticate',
-          {
-            username: form.username,
-            password: form.password,
-          },
-        )
+        router.push('/main')
 
-        localStorage.setItem('token', response.data.token)
+        const response = await axios.post('http://localhost:8080/singup', {
+          username: form.username,
+          password: form.password,
+        })
+
+        const router = useRouter()
+
+        // localStorage.setItem('token', response.data.token)
 
         // 로그인 성공 후 페이지 이동을 원한다면 다음과 같이 사용할 수 있습니다.
         // router.push('/dashboard');
@@ -60,7 +62,7 @@ export default {
     return {
       form,
       error,
-      login,
+      signup,
     }
   },
 }
