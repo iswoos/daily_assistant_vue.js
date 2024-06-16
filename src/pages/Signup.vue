@@ -1,8 +1,8 @@
 <template>
-  <div class="login-container">
-    <div class="login-form">
-      <h2>Login</h2>
-      <form @submit.prevent="login">
+  <div class="signup-container">
+    <div class="signup-form">
+      <h2>Signup</h2>
+      <form @submit.prevent="signup">
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" id="username" v-model="form.username" required />
@@ -16,10 +16,7 @@
             required
           />
         </div>
-        <button type="submit">Login</button>
-        <router-link to="/signup">
-          <button type="button" class="signup-button">Sign up</button>
-        </router-link>
+        <button type="submit" class="signup-button">Signup</button>
         <p v-if="error" class="error">{{ error }}</p>
       </form>
     </div>
@@ -31,7 +28,7 @@ import { reactive, ref } from 'vue'
 import axios from 'axios'
 
 export default {
-  name: 'LoginPage',
+  name: 'SignupPage',
   setup() {
     const form = reactive({
       username: '',
@@ -70,7 +67,7 @@ export default {
 </script>
 
 <style scoped>
-.login-container {
+.signup-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,7 +75,7 @@ export default {
   background-color: #f8f9fa;
 }
 
-.login-form {
+.signup-form {
   width: 300px;
   padding: 20px;
   background-color: #ffffff;
@@ -93,7 +90,7 @@ h2 {
   text-align: center;
 }
 
-.form-group {
+.signup-group {
   margin-bottom: 10px; /* 입력창 간격을 줄였습니다 */
 }
 
@@ -127,9 +124,8 @@ button:hover {
 }
 
 .signup-button {
-  margin-top: 10px; /* 회원가입 버튼 위쪽 간격 추가 */
+  margin-top: 20px;
 }
-
 .error {
   color: #dc3545;
   margin-top: 10px;
