@@ -27,6 +27,8 @@
 </template>
 
 <script>
+// useRouter : 라우터 인스턴스로 javascript에서 다른 페이지로 이동할 수 있다.
+// useRoute : 현재 활성 라우트 정보에 접근할 수 있다. (읽기 전용)
 import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 import axios from 'axios'
