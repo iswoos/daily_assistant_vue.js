@@ -40,7 +40,7 @@ export default {
 
     const signup = async () => {
       try {
-        router.push('/main')
+        router.push('/login')
 
         const response = await axios.post('http://localhost:8080/singup', {
           username: form.username,
