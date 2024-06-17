@@ -4,8 +4,8 @@
       <h2>Signup</h2>
       <form @submit.prevent="signup">
         <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" v-model="form.username" required />
+          <label for="userId">UserId</label>
+          <input type="text" id="userId" v-model="form.userId" required />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
@@ -34,7 +34,7 @@ export default {
     const router = useRouter()
 
     const form = reactive({
-      username: '',
+      userId: '',
       password: '',
     })
 
@@ -42,12 +42,15 @@ export default {
 
     const signup = async () => {
       try {
-        router.push('/login')
+        const response = await axios.post(
+          'http://localhost:8082/members/signup',
+          {
+            userId: form.userId,
+            password: form.password,
+          },
+        )
 
-        const response = await axios.post('http://localhost:8080/singup', {
-          username: form.username,
-          password: form.password,
-        })
+        router.push('/login')
 
         // localStorage.setItem('token', response.data.token)
 

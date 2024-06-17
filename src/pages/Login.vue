@@ -4,8 +4,8 @@
       <h2>Login</h2>
       <form @submit.prevent="login">
         <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" v-model="form.username" required />
+          <label for="userId">UserId</label>
+          <input type="text" id="userId" v-model="form.userId" required />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
@@ -39,7 +39,7 @@ export default {
     const router = useRouter()
 
     const form = reactive({
-      username: '',
+      userId: '',
       password: '',
     })
 
@@ -47,14 +47,16 @@ export default {
 
     const login = async () => {
       try {
+        const response = await axios.post(
+          'http://localhost:8082/members/login',
+          {
+            userId: form.userId,
+            password: form.password,
+          },
+        )
+
         router.push('/main')
-
-        const response = await axios.post('http://localhost:8080/login', {
-          username: form.username,
-          password: form.password,
-        })
-
-        localStorage.setItem('token', response.data.token)
+        // localStorage.setItem('token', response.data.token)
 
         // 로그인 성공 후 페이지 이동을 원한다면 다음과 같이 사용할 수 있습니다.
         // router.push('/dashboard');
