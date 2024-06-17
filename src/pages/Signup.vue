@@ -2,7 +2,7 @@
   <div class="signup-container">
     <div class="signup-form">
       <h2>Signup</h2>
-      <form @submit.prevent="signup">
+      <form v-on:submit.prevent="signup">
         <div class="form-group">
           <label for="userId">UserId</label>
           <input type="text" id="userId" v-model="form.userId" required />
@@ -49,13 +49,7 @@ export default {
             password: form.password,
           },
         )
-
         router.push('/login')
-
-        // localStorage.setItem('token', response.data.token)
-
-        // 로그인 성공 후 페이지 이동을 원한다면 다음과 같이 사용할 수 있습니다.
-        // router.push('/dashboard');
       } catch (error) {
         error.value = 'Invalid credentials. Please try again.'
         console.error('Login error:', error)

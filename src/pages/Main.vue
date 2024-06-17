@@ -1,23 +1,33 @@
 <template>
-  <div>
-    <button @click="getCurrentPosition()">위치 좌표 확인</button>
-    <div>{{ isPositionReady ? 'yes' : 'no' }}</div>
+  <div v-if="weatherData">
+    <p>지역: {{ weatherData.city.name }}</p>
+    <div v-for="item in weatherData.list" :key="item.dt">
+      <p>시간: {{ utcToKSC(item.dt) }}</p>
+      <p>날씨: {{ item.weather[0].description }}</p>
+      <p>온도: {{ item.main.temp }} °C</p>
+      <hr />
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 export default {
   name: 'MainPage',
 
   setup() {
     const positionObj = ref({})
-    const isPositionReady = ref(false)
+    const weatherData = ref(null)
+
+    onMounted(() => {
+      getCurrentPosition()
+    })
 
     const getCurrentPosition = () => {
       if (!navigator.geolocation) {
-        setAlert('위치 정보를 찾을 수 없습니다.1')
+        setAlert('위치 정보를 찾을 수 없습니다.')
       } else {
         navigator.geolocation.getCurrentPosition(
           getPositionValue,
@@ -26,20 +36,16 @@ export default {
       }
     }
 
-    const getPositionValue = (val) => {
+    const getPositionValue = async (val) => {
       positionObj.value.latitude = val.coords.latitude
       positionObj.value.longitude = val.coords.longitude
-      isPositionReady.value = true
-      console.log(positionObj.value.latitude)
-      console.log(positionObj.value.longitude)
 
       const { latitude, longitude } = formatLongitudeAndLatitude(
         positionObj.value.latitude,
         positionObj.value.longitude,
       )
-      console.log(latitude)
-      console.log(longitude)
-      setAlert('주소 확인 완료')
+
+      await fetchWeatherData(latitude, longitude)
     }
 
     const formatLongitudeAndLatitude = (latitude, longitude) => {
@@ -49,18 +55,38 @@ export default {
     }
 
     const geolocationError = () => {
-      setAlert('위치 정보를 찾을 수 없습니다.2')
+      setAlert('위치 정보를 찾을 수 없습니다.')
     }
 
     const setAlert = (text) => {
       alert(text)
     }
 
+    const fetchWeatherData = async (latitude, longitude) => {
+      const apiKey = process.env.VUE_APP_OPENWEATHER_API_KEY
+      const url = `https://api.openweathermap.org/data/2.5/forecast?cnt=10&lat=${latitude}&lon=${longitude}&units=metric&lang=kr&appid=${apiKey}`
+
+      try {
+        const response = await axios.get(url)
+        weatherData.value = response.data
+        console.log(weatherData)
+      } catch (error) {
+        console.error('날씨 정보를 가져오는 중 오류 발생:', error)
+      }
+    }
+
+    // toLocaleString 메서드를 이용하여 ksc 시간으로 변경
+    const utcToKSC = (utcTimestamp) => {
+      const utcDate = new Date(utcTimestamp * 1000)
+      return utcDate.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
+    }
+
     return {
       positionObj,
-      isPositionReady,
       getCurrentPosition,
       formatLongitudeAndLatitude,
+      weatherData,
+      utcToKSC,
     }
   },
 }
