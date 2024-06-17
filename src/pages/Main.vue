@@ -64,7 +64,7 @@ export default {
 
     const fetchWeatherData = async (latitude, longitude) => {
       const apiKey = process.env.VUE_APP_OPENWEATHER_API_KEY
-      console.log('실행확인')
+      console.log('실행확인asdf')
       console.log(apiKey)
       const url = `https://api.openweathermap.org/data/2.5/forecast?cnt=10&lat=${latitude}&lon=${longitude}&units=metric&lang=kr&appid=${apiKey}`
 
