@@ -1,4 +1,4 @@
-# general_board
+# daily_assistant
 
 ## Project setup
 ```

@@ -12,10 +12,14 @@ export default {
       required: true,
     },
   },
-  methods: {
-    emitMordalOn() {
-      this.$emit('mordal-on', this.product.content)
-    },
+  setup(props, { emit }) {
+    const emitMordalOn = () => {
+      emit('mordal-on', props.product.content)
+    }
+
+    return {
+      emitMordalOn,
+    }
   },
   mounted() {
     console.log(this.product)

@@ -23,10 +23,14 @@ export default {
       required: true,
     },
   },
-  methods: {
-    emitmordal_off() {
-      this.$emit('mordal_off')
-    },
+  setup(props, { emit }) {
+    const emitmordal_off = () => {
+      emit('mordal_off')
+    }
+
+    return {
+      emitmordal_off,
+    }
   },
 }
 </script>
