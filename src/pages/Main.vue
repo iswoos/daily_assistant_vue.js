@@ -1,12 +1,20 @@
 <template>
-  <div v-if="weatherData">
-    <p>지역: {{ weatherData.city.name }}</p>
-    <div v-for="item in weatherData.list" :key="item.dt">
-      <p>시간: {{ utcToKSC(item.dt) }}</p>
-      <p>날씨: {{ item.weather[0].description }}</p>
-      <p>온도: {{ item.main.temp }} °C</p>
-      <hr />
+  <div>
+    <div v-if="weatherData">
+      <p>지역: {{ weatherData.city.name }}</p>
+      <div v-for="item in weatherData.list" :key="item.dt">
+        <p>시간: {{ utcToKSC(item.dt) }}</p>
+        <p>날씨: {{ item.weather[0].description }}</p>
+        <p>온도: {{ item.main.temp }} °C</p>
+        <hr />
+      </div>
     </div>
+  </div>
+
+  <div>main</div>
+
+  <div>
+    <BottomNavigationBar />
   </div>
 </template>
 
@@ -33,10 +41,14 @@
 <script>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import BottomNavigationBar from '@/components/layouts/BottomNavigationBar'
 
 export default {
   name: 'MainPage',
 
+  components: {
+    BottomNavigationBar,
+  },
   setup() {
     const positionObj = ref({})
     const weatherData = ref(null)
@@ -90,6 +102,7 @@ export default {
       try {
         const response = await axios.get(url)
         weatherData.value = response.data
+        console.log(weatherData.value)
       } catch (error) {
         console.error('날씨 정보를 가져오는 중 오류 발생:', error)
       }
@@ -111,3 +124,5 @@ export default {
   },
 }
 </script>
+
+<style></style>

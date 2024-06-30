@@ -4,6 +4,8 @@ import ProductPage from '../pages/ProductPage.vue'
 import MainPage from '../pages/Main.vue'
 import LoginPage from '../pages/Login.vue'
 import SignupPage from '../pages/Signup.vue'
+import BoardPage from '../pages/Board.vue'
+import ChatListPage from '../pages/ChatList.vue'
 
 // 라우터 설계
 const routes = [
@@ -11,6 +13,8 @@ const routes = [
   { path: '/login', component: LoginPage },
   { path: '/main', component: MainPage },
   { path: '/signup', component: SignupPage },
+  { path: '/chatlist', component: ChatListPage },
+  { path: '/board', component: BoardPage },
 ]
 
 // 라우터 생성

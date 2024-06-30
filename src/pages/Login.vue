@@ -32,6 +32,7 @@
 import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 import axios from 'axios'
+import { JsonStorage } from '@/utils/storage/JsonStorage'
 
 export default {
   name: 'LoginPage',
@@ -54,6 +55,7 @@ export default {
             password: form.password,
           },
         )
+        JsonStorage.set('user', { userId: form.userId })
         router.push('/main')
         // localStorage.setItem('token', response.data.token)
       } catch (error) {
