@@ -69,13 +69,16 @@ export default {
     }
 
     const getPositionValue = async (val) => {
-      positionObj.value.latitude = val.coords.latitude
-      positionObj.value.longitude = val.coords.longitude
+      const latitude = val.coords.latitude
+      const longitude = val.coords.longitude
 
-      const { latitude, longitude } = formatLongitudeAndLatitude(
-        positionObj.value.latitude,
-        positionObj.value.longitude,
+      const { userLatitude, userLongitude } = formatLongitudeAndLatitude(
+        latitude,
+        longitude,
       )
+
+      positionObj.value.latitude = userLatitude
+      positionObj.value.longitude = userLongitude
 
       await fetchWeatherData(latitude, longitude)
     }
@@ -83,7 +86,7 @@ export default {
     const formatLongitudeAndLatitude = (latitude, longitude) => {
       const formatLatitude = Math.trunc(latitude * 1000) / 1000
       const formatLongitude = Math.trunc(longitude * 1000) / 1000
-      return { latitude: formatLatitude, longitude: formatLongitude }
+      return { userLatitude: formatLatitude, userLongitude: formatLongitude }
     }
 
     const geolocationError = () => {

@@ -5,7 +5,7 @@
         <v-btn
           v-for="item in bottomNavigationItems"
           :key="item.routerName"
-          @click="routeLink(item.routerName)"
+          @click="routePage(item.routerName)"
         >
           <v-icon>{{ item.iconName }}</v-icon>
           <span>{{ item.name }}</span>
@@ -42,13 +42,13 @@ export default {
       },
     ])
 
-    const routeLink = (routerName) => {
+    const routePage = (routerName) => {
       router.push(routerName)
     }
 
     return {
       bottomNavigationItems,
-      routeLink,
+      routePage,
     }
   },
 }
