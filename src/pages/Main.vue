@@ -1,22 +1,54 @@
 <template>
-  <div v-if="weatherData">
-    <p>지역: {{ weatherData.city.name }}</p>
-    <div v-for="item in weatherData.list" :key="item.dt">
-      <p>시간: {{ utcToKSC(item.dt) }}</p>
-      <p>날씨: {{ item.weather[0].description }}</p>
-      <p>온도: {{ item.main.temp }} °C</p>
-      <hr />
+  <div>
+    <div v-if="weatherData">
+      <p>지역: {{ weatherData.city.name }}</p>
+      <div v-for="item in weatherData.list" :key="item.dt">
+        <p>시간: {{ utcToKSC(item.dt) }}</p>
+        <p>날씨: {{ item.weather[0].description }}</p>
+        <p>온도: {{ item.main.temp }} °C</p>
+        <hr />
+      </div>
     </div>
   </div>
+
+  <div>main</div>
+
+  <div>
+    <BottomNavigationBar />
+  </div>
 </template>
+
+<!-- <template>
+  <div v-if="weatherData">
+    <p>지역: {{ weatherData.city.name }}</p>
+    <p>시간: {{ utcToKSC(weatherData.list[0].dt) }}</p>
+    <p>날씨: {{ weatherData.list[0].weather[0].description }}</p>
+    <p>온도: {{ weatherData.list[0].main.temp }} °C</p>
+    <hr />
+  </div>
+</template> -->
+
+<!-- <template>
+  <div v-if="weatherData">
+    <p>지역: {{ weatherData.name }}</p>
+    <p>시간: {{ utcToKSC(weatherData.dt) }}</p>
+    <p>날씨: {{ weatherData.weather[0].description }}</p>
+    <p>온도: {{ weatherData.main.temp }} °C</p>
+    <hr />
+  </div>
+</template> -->
 
 <script>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import BottomNavigationBar from '@/components/layouts/BottomNavigationBar'
 
 export default {
   name: 'MainPage',
 
+  components: {
+    BottomNavigationBar,
+  },
   setup() {
     const positionObj = ref({})
     const weatherData = ref(null)
@@ -37,13 +69,16 @@ export default {
     }
 
     const getPositionValue = async (val) => {
-      positionObj.value.latitude = val.coords.latitude
-      positionObj.value.longitude = val.coords.longitude
+      const latitude = val.coords.latitude
+      const longitude = val.coords.longitude
 
-      const { latitude, longitude } = formatLongitudeAndLatitude(
-        positionObj.value.latitude,
-        positionObj.value.longitude,
+      const { userLatitude, userLongitude } = formatLongitudeAndLatitude(
+        latitude,
+        longitude,
       )
+
+      positionObj.value.latitude = userLatitude
+      positionObj.value.longitude = userLongitude
 
       await fetchWeatherData(latitude, longitude)
     }
@@ -51,7 +86,7 @@ export default {
     const formatLongitudeAndLatitude = (latitude, longitude) => {
       const formatLatitude = Math.trunc(latitude * 1000) / 1000
       const formatLongitude = Math.trunc(longitude * 1000) / 1000
-      return { latitude: formatLatitude, longitude: formatLongitude }
+      return { userLatitude: formatLatitude, userLongitude: formatLongitude }
     }
 
     const geolocationError = () => {
@@ -64,11 +99,13 @@ export default {
 
     const fetchWeatherData = async (latitude, longitude) => {
       const apiKey = process.env.VUE_APP_OPENWEATHER_API_KEY
-      const url = `https://api.openweathermap.org/data/2.5/forecast?cnt=10&lat=${latitude}&lon=${longitude}&units=metric&lang=kr&appid=${apiKey}`
+      const url = `https://api.openweathermap.org/data/2.5/forecast?cnt=3&lat=${latitude}&lon=${longitude}&units=metric&lang=kr&appid=${apiKey}`
+      // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&lang=kr&appid=${apiKey}`
 
       try {
         const response = await axios.get(url)
         weatherData.value = response.data
+        console.log(weatherData.value)
       } catch (error) {
         console.error('날씨 정보를 가져오는 중 오류 발생:', error)
       }
@@ -90,3 +127,5 @@ export default {
   },
 }
 </script>
+
+<style></style>
