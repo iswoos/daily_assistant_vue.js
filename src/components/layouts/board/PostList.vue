@@ -97,13 +97,10 @@ export default {
       },
     ])
 
-    const routePost = async (id) => {
+    const routePost = async (postId) => {
       try {
-        const response = await axios.post(
-          'http://localhost:8082/members/login',
-          {
-            postId: id,
-          },
+        const response = await axios.get(
+          `http://localhost:8082/posts/${postId}`,
         )
       } catch (error) {
         error.value = 'Invalid credentials. Please try again.'
