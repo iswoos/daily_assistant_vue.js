@@ -9,7 +9,7 @@
         {{ category }}
       </button>
     </div>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="submit">
       <div class="form-group">
         <label for="title">제목</label>
         <input
@@ -31,11 +31,12 @@
       </div>
       <div class="form-group">
         <label for="image">이미지 등록</label>
-        <input
-          type="file"
-          id="image"
-          @change="handleImageUpload"
-          accept="image/*"
+        <input type="file" id="image" @change="imageUpload" accept="image/*" />
+        <img
+          v-if="image"
+          :src="image"
+          alt="업로드된 이미지가 표시되지 않습니다."
+          class="image-preview"
         />
       </div>
       <button type="submit" class="submit-button">작성하기</button>
@@ -46,6 +47,7 @@
 <script>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 export default {
   name: 'CreatePostForm',
@@ -56,19 +58,23 @@ export default {
     const categories = ref(['일반', '팁', '정보', '기타'])
     const router = useRouter()
 
-    const handleImageUpload = (event) => {
+    const imageUpload = (event) => {
       const file = event.target.files[0]
       if (file) {
         image.value = URL.createObjectURL(file)
       }
     }
 
-    const handleSubmit = () => {
-      // 여기에 게시글 작성 로직 추가 (예: API 호출)
-      console.log('제목:', title.value)
-      console.log('내용:', content.value)
-      if (image.value) {
-        console.log('이미지:', image.value)
+    const submit = async () => {
+      try {
+        const response = await axios.post('http://localhost:8082/posts', {
+          title: title.value,
+          content: content.value,
+          image: image.value,
+          categories: categories.value,
+        })
+      } catch (error) {
+        alert('업로드가 실패하였습니다.')
       }
       router.push('/board')
     }
@@ -78,8 +84,8 @@ export default {
       content,
       image,
       categories,
-      handleImageUpload,
-      handleSubmit,
+      imageUpload,
+      submit,
     }
   },
 }
@@ -146,6 +152,15 @@ export default {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+}
+
+.image-preview {
+  display: block;
+  margin-top: 10px;
+  max-width: 50%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .submit-button:hover {
