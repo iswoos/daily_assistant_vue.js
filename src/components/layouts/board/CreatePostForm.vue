@@ -4,7 +4,11 @@
       <button
         v-for="category in categories"
         :key="category"
-        class="category-button"
+        :class="[
+          'category-button',
+          { selected: category === selectedCategory },
+        ]"
+        @click="selectCategory(category)"
       >
         {{ category }}
       </button>
@@ -48,6 +52,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { JsonStorage } from '@/utils/storage/JsonStorage'
 
 export default {
   name: 'CreatePostForm',
@@ -56,7 +61,12 @@ export default {
     const content = ref('')
     const image = ref(null)
     const categories = ref(['일반', '팁', '정보', '기타'])
+    const selectedCategory = ref('')
     const router = useRouter()
+
+    const selectCategory = (category) => {
+      selectedCategory.value = category
+    }
 
     const imageUpload = (event) => {
       const file = event.target.files[0]
@@ -71,7 +81,8 @@ export default {
           title: title.value,
           content: content.value,
           image: image.value,
-          categories: categories.value,
+          category: selectedCategory.value,
+          userId: JsonStorage.get('user').userId,
         })
       } catch (error) {
         alert('업로드가 실패하였습니다.')
@@ -84,6 +95,8 @@ export default {
       content,
       image,
       categories,
+      selectedCategory,
+      selectCategory,
       imageUpload,
       submit,
     }
@@ -114,6 +127,11 @@ export default {
   cursor: pointer;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.category-button.selected {
+  background-color: #4caf50;
+  color: #fff;
 }
 
 .category-button:hover {

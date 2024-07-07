@@ -7,6 +7,7 @@ import SignupPage from '../pages/Signup.vue'
 import BoardPage from '../pages/board/Board.vue'
 import CreatePostPage from '../pages/board/CreatePost.vue'
 import ChatPage from '../pages/chat/Chat.vue'
+import PostPage from '../pages/board/Post.vue'
 
 // 라우터 설계
 const routes = [
@@ -17,6 +18,7 @@ const routes = [
   { path: '/chat', component: ChatPage },
   { path: '/board', component: BoardPage },
   { path: '/create/post', component: CreatePostPage },
+  { path: '/posts/:postId', component: PostPage },
 ]
 
 // 라우터 생성
