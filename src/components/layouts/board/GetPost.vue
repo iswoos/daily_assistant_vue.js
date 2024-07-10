@@ -28,7 +28,6 @@ import axios from 'axios'
 
 export default {
   name: 'GetPost',
-
   props: {
     postId: {
       type: String,
@@ -36,7 +35,7 @@ export default {
     },
   },
 
-  setup(props) {
+  setup(props, { emit }) {
     const post = ref(null)
 
     onMounted(() => {
@@ -49,6 +48,7 @@ export default {
           `http://localhost:8082/posts/${postId}`,
         )
         post.value = response.data
+        emit('postUserId', post.value.userId)
         console.log(response.data)
       } catch (error) {
         error.value = 'invalid'
@@ -71,11 +71,12 @@ export default {
 <style>
 .post-container {
   width: 70%;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #fff;
+  position: relative;
 }
 
 .post-header {
@@ -116,5 +117,35 @@ export default {
 
 .post-footer p {
   margin: 5px 0;
+}
+
+.loading {
+  width: 70%;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+}
+
+.ad-container {
+  position: absolute;
+  top: 0;
+  right: -250px;
+  width: 250px;
+  height: 100%;
+}
+
+.ad-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.ad-container .ad-bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 </style>
