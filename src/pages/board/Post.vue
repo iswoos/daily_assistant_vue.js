@@ -19,6 +19,7 @@ import { useRouter } from 'vue-router'
 import GetPost from '@/components/layouts/board/GetPost.vue'
 import CommentList from '@/components/layouts/board/CommentList.vue'
 import { JsonStorage } from '@/utils/storage/JsonStorage'
+import axios from 'axios'
 
 export default {
   name: 'PostPage',
@@ -45,9 +46,15 @@ export default {
       console.log('Editing post', postId.value)
     }
 
-    const deletePost = () => {
-      // 삭제 API 작동 후, 게시글 리스트로 이동
-      console.log('Deleting post', postId.value)
+    const deletePost = async () => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:8082/posts/${postId.value}`,
+        )
+      } catch (error) {
+        console.log(error)
+      }
+      router.push('/board')
     }
 
     const writePost = () => {
