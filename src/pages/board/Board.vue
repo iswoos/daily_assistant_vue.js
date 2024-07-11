@@ -22,7 +22,7 @@ export default {
     const router = useRouter()
 
     const routePage = () => {
-      router.push('create/post')
+      router.push('/create/post')
     }
 
     return {

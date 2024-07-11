@@ -51,8 +51,7 @@ export default {
     }
 
     const writePost = () => {
-      // 글쓰기 화면으로 이동
-      console.log('Writing new post')
+      router.push('/create/post')
     }
 
     return {

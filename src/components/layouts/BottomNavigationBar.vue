@@ -43,7 +43,7 @@ export default {
     ])
 
     const routePage = (routerName) => {
-      router.push(routerName)
+      router.push(`/${routerName}`)
     }
 
     return {
