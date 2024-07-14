@@ -105,9 +105,8 @@ export default {
       try {
         const response = await axios.get(url)
         weatherData.value = response.data
-        console.log(weatherData.value)
       } catch (error) {
-        console.error('날씨 정보를 가져오는 중 오류 발생:', error)
+        throw new Error(error)
       }
     }
 

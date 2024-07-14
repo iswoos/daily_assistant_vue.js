@@ -1,6 +1,8 @@
 <template>
+  <div>chatlist</div>
+
   <div>
-    <PostList />
+    <ChatList />
   </div>
 
   <div>
@@ -9,13 +11,13 @@
 </template>
 <script>
 import BottomNavigationBar from '@/components/layouts/BottomNavigationBar.vue'
-import PostList from '@/components/layouts/board/PostList.vue'
+import ChatList from '@/components/layouts/chat/ChatList.vue'
 
 export default {
-  name: 'BoardPage',
+  name: 'ChatPage',
   components: {
     BottomNavigationBar,
-    PostList,
+    ChatList,
   },
   setup() {
     return {}

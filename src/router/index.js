@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import ProductPage from '../pages/ProductPage.vue'
-import MainPage from '../pages/Main.vue'
+import MainPage from '../pages/main/Main.vue'
 import LoginPage from '../pages/Login.vue'
 import SignupPage from '../pages/Signup.vue'
-import BoardPage from '../pages/Board.vue'
-import ChatListPage from '../pages/ChatList.vue'
+import BoardPage from '../pages/board/Board.vue'
+import PostForm from '../pages/board/PostForm.vue'
+import ChatPage from '../pages/chat/Chat.vue'
+import PostPage from '../pages/board/Post.vue'
 
 // 라우터 설계
 const routes = [
@@ -13,8 +15,11 @@ const routes = [
   { path: '/login', component: LoginPage },
   { path: '/main', component: MainPage },
   { path: '/signup', component: SignupPage },
-  { path: '/chatlist', component: ChatListPage },
+  { path: '/chat', component: ChatPage },
   { path: '/board', component: BoardPage },
+  { path: '/create/post', component: PostForm },
+  { path: '/modify/post', component: PostForm },
+  { path: '/posts/:postId', component: PostPage },
 ]
 
 // 라우터 생성

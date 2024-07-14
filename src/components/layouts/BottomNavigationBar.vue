@@ -5,7 +5,7 @@
         <v-btn
           v-for="item in bottomNavigationItems"
           :key="item.routerName"
-          @click="routePage(item.routerName)"
+          @click.prevent="routePage(item.routerName)"
         >
           <v-icon>{{ item.iconName }}</v-icon>
           <span>{{ item.name }}</span>
@@ -36,14 +36,14 @@ export default {
         name: '게시판',
       },
       {
-        routerName: 'chatlist',
+        routerName: 'chat',
         iconName: 'mdi-message-text',
         name: '채팅',
       },
     ])
 
     const routePage = (routerName) => {
-      router.push(routerName)
+      router.push(`/${routerName}`)
     }
 
     return {

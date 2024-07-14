@@ -21,10 +21,10 @@
               {{ item.title }}
             </a>
           </td>
-          <td>{{ item.writer }}</td>
-          <td>{{ item.date }}</td>
-          <td>{{ item.views }}</td>
-          <td>{{ item.recommendations }}</td>
+          <td>{{ item.userId }}</td>
+          <td>{{ item.createdDateTime }}</td>
+          <td>{{ item.view_count }}</td>
+          <td>{{ item.likes_count }}</td>
         </tr>
       </tbody>
     </table>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -40,80 +40,30 @@ export default {
   name: 'PostList',
 
   setup() {
-    const postList = ref([
-      {
-        id: 1,
-        category: '일반',
-        title: '첫 번째 게시글',
-        writer: 'artistjay',
-        date: '2023-06-01',
-        views: 120,
-        recommendations: 5,
-      },
-      {
-        id: 2,
-        category: '공지',
-        title: '두 번째 게시글',
-        writer: 'artistjay',
-        date: '2023-06-02',
-        views: 150,
-        recommendations: 10,
-      },
-      {
-        id: 3,
-        category: '질문',
-        title: '세 번째 게시글',
-        writer: 'artistjay',
-        date: '2023-06-03',
-        views: 80,
-        recommendations: 2,
-      },
-      {
-        id: 4,
-        category: '토론',
-        title: '네 번째 게시글',
-        writer: 'artistjay',
-        date: '2023-06-04',
-        views: 200,
-        recommendations: 20,
-      },
-      {
-        id: 5,
-        category: '공지',
-        title: '다섯 번째 게시글',
-        writer: 'artistjay',
-        date: '2023-06-05',
-        views: 300,
-        recommendations: 15,
-      },
-      {
-        id: 6,
-        category: '일반',
-        title: '여섯 번째 게시글',
-        writer: 'artistjay',
-        date: '2023-06-06',
-        views: 50,
-        recommendations: 1,
-      },
-    ])
+    const router = useRouter()
+    const postList = ref([])
 
-    const routePost = async (id) => {
+    onMounted(() => {
+      getPostList()
+    })
+
+    const getPostList = async () => {
       try {
-        const response = await axios.post(
-          'http://localhost:8082/members/login',
-          {
-            postId: id,
-          },
-        )
+        const response = await axios.get('http://localhost:8082/posts')
+        postList.value = response.data
       } catch (error) {
-        error.value = 'Invalid credentials. Please try again.'
+        error.value = 'invalid'
       }
-      //   router.push({ name: 'BoardDetail', params: { id } })
+    }
+
+    const routePost = (postId) => {
+      router.push({ path: `/posts/${postId}`, params: { postId } })
     }
 
     return {
       postList,
       routePost,
+      getPostList,
     }
   },
 }
