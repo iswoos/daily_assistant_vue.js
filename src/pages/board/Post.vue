@@ -6,7 +6,8 @@
     <CommentList :postId="postId" />
   </div>
   <div class="button-section" v-if="isAuthor">
-    <button @click="editPost">수정</button>
+    <button @click="modifyPost">수정</button>
+    <br />
     <button @click="deletePost">삭제</button>
   </div>
   <div class="button-section">
@@ -41,9 +42,15 @@ export default {
       }
     }
 
-    const editPost = () => {
-      // 수정 API 작동 후, 해당 게시글 새로고침
-      console.log('Editing post', postId.value)
+    const modifyPost = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8082/posts/${postId.value}`,
+        )
+        router.push({ path: '/modify/post', state: { post: response.data } })
+      } catch (error) {
+        error.value = 'invalid'
+      }
     }
 
     const deletePost = async () => {
@@ -64,7 +71,7 @@ export default {
     return {
       postId,
       isAuthor,
-      editPost,
+      modifyPost,
       deletePost,
       writePost,
       handlePostUserId,

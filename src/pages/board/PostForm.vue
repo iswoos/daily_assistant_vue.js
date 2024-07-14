@@ -1,15 +1,15 @@
 <template>
   <div>
-    <CreatePostForm />
+    <PostForm />
   </div>
 </template>
 <script>
-import CreatePostForm from '@/components/layouts/board/CreatePostForm.vue'
+import PostForm from '@/components/layouts/board/PostForm.vue'
 
 export default {
-  name: 'CreatePostPage',
+  name: 'PostFormPage',
   components: {
-    CreatePostForm,
+    PostForm,
   },
   setup() {
     return {}

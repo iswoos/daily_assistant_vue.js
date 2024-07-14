@@ -4,7 +4,7 @@
       <h2>{{ post.title }}</h2>
       <p>
         <strong>작성자:</strong> {{ post.userId }} | <strong>카테고리:</strong>
-        {{ post.category }} | <strong>작성일:</strong>
+        {{ post.postCategory }} | <strong>작성일:</strong>
         {{ formatDateTime(post.createdDateTime) }}
       </p>
     </div>
@@ -49,7 +49,6 @@ export default {
         )
         post.value = response.data
         emit('postUserId', post.value.userId)
-        console.log(response.data)
       } catch (error) {
         error.value = 'invalid'
       }

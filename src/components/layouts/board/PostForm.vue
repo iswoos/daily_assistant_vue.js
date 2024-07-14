@@ -43,19 +43,21 @@
           class="image-preview"
         />
       </div>
-      <button type="submit" class="submit-button">작성하기</button>
+      <button type="submit" class="submit-button">
+        {{ isModify ? '수정' : '작성' }}
+      </button>
     </form>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { JsonStorage } from '@/utils/storage/JsonStorage'
 
 export default {
-  name: 'CreatePostForm',
+  name: 'PostForm',
   setup() {
     const title = ref('')
     const content = ref('')
@@ -63,6 +65,20 @@ export default {
     const categories = ref(['일반', '팁', '정보', '기타'])
     const selectedCategory = ref('')
     const router = useRouter()
+    const isModify = ref(false)
+    const postId = ref(null)
+
+    onMounted(() => {
+      const postInfo = history.state.post
+      if (postInfo) {
+        postId.value = postInfo.id
+        title.value = postInfo.title
+        content.value = postInfo.content
+        selectedCategory.value = postInfo.postCategory
+        image.value = postInfo.image
+        isModify.value = true
+      }
+    })
 
     const selectCategory = (category) => {
       selectedCategory.value = category
@@ -77,13 +93,23 @@ export default {
 
     const submit = async () => {
       try {
-        const response = await axios.post('http://localhost:8082/posts', {
-          title: title.value,
-          content: content.value,
-          image: image.value,
-          category: selectedCategory.value,
-          userId: JsonStorage.get('user').userId,
-        })
+        if (isModify.value) {
+          await axios.patch(`http://localhost:8082/posts/${postId.value}`, {
+            title: title.value,
+            content: content.value,
+            image: image.value,
+            category: selectedCategory.value,
+            userId: JsonStorage.get('user').userId,
+          })
+        } else {
+          await axios.post('http://localhost:8082/posts', {
+            title: title.value,
+            content: content.value,
+            image: image.value,
+            category: selectedCategory.value,
+            userId: JsonStorage.get('user').userId,
+          })
+        }
       } catch (error) {
         alert('업로드가 실패하였습니다.')
       }
@@ -99,6 +125,7 @@ export default {
       selectCategory,
       imageUpload,
       submit,
+      isModify,
     }
   },
 }
