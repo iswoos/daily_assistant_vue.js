@@ -98,15 +98,14 @@ export default {
             title: title.value,
             content: content.value,
             image: image.value,
-            category: selectedCategory.value,
-            userId: JsonStorage.get('user').userId,
+            postCategory: selectedCategory.value,
           })
         } else {
           await axios.post('http://localhost:8082/posts', {
             title: title.value,
             content: content.value,
             image: image.value,
-            category: selectedCategory.value,
+            postCategory: selectedCategory.value,
             userId: JsonStorage.get('user').userId,
           })
         }
