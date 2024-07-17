@@ -47,7 +47,7 @@ export default {
     const modifyPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8082/posts/${postId.value}`,
+          `http://localhost:8082/posts/${postId.value}/likes`,
         )
         router.push({ path: '/modify/post', state: { post: response.data } })
       } catch (error) {
@@ -69,7 +69,7 @@ export default {
     const likesPost = async () => {
       try {
         const response = await axios.patch(
-          `http://localhost:8082/posts/${postId.value}`,
+          `http://localhost:8082/posts/${postId.value}/likes`,
         )
       } catch (error) {
         console.log(error)
