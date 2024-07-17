@@ -15,8 +15,8 @@
       <p>{{ post.content }}</p>
     </div>
     <div class="post-footer">
-      <p><strong>조회수:</strong> {{ post.view_count }}</p>
-      <p><strong>추천 수:</strong> {{ post.likes_count }}</p>
+      <p><strong>조회수:</strong> {{ post.viewCount }}</p>
+      <p><strong>추천 수:</strong> {{ post.likesCount }}</p>
     </div>
   </div>
   <div v-else class="loading">Loading...</div>

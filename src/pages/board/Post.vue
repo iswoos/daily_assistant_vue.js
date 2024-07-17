@@ -11,6 +11,8 @@
     <button @click="deletePost">삭제</button>
   </div>
   <div class="button-section">
+    <button @click="likesPost">추천</button>
+    <br />
     <button @click="writePost">글쓰기</button>
   </div>
 </template>
@@ -64,6 +66,16 @@ export default {
       router.push('/board')
     }
 
+    const likesPost = async () => {
+      try {
+        const response = await axios.patch(
+          `http://localhost:8082/posts/${postId.value}`,
+        )
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     const writePost = () => {
       router.push('/create/post')
     }
@@ -73,6 +85,7 @@ export default {
       isAuthor,
       modifyPost,
       deletePost,
+      likesPost,
       writePost,
       handlePostUserId,
     }
