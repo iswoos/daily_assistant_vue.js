@@ -36,6 +36,10 @@ export default {
   position: relative;
 }
 
+.postCreate {
+  margin-left: 50em;
+}
+
 .postCreate:hover {
   outline-color: transparent;
   outline-style: solid;
