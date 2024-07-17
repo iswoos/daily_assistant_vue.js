@@ -15,7 +15,7 @@
       <tbody>
         <tr v-for="item in postList" :key="item.id">
           <td>{{ item.id }}</td>
-          <td>{{ item.category }}</td>
+          <td>{{ item.postCategory }}</td>
           <td>
             <a href="#" @click.prevent="routePost(item.id)">
               {{ item.title }}
@@ -23,8 +23,8 @@
           </td>
           <td>{{ item.userId }}</td>
           <td>{{ item.createdDateTime }}</td>
-          <td>{{ item.view_count }}</td>
-          <td>{{ item.likes_count }}</td>
+          <td>{{ item.viewCount }}</td>
+          <td>{{ item.likesCount }}</td>
         </tr>
       </tbody>
     </table>
