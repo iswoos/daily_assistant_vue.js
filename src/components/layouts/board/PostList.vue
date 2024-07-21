@@ -96,28 +96,21 @@ export default {
   text-align: center;
 }
 
-/* a:link {
-  color: black;
-} */
-
-a:visited {
-  color: red;
-}
-
-/* a:hover {
-  color: blue;
-}
-
-a:active {
-  color: red;
-} */
-
-/* a {
+a:link {
   color: black;
   text-decoration: none;
 }
 
+a:visited {
+  color: green;
+}
+
 a:hover {
+  color: blue;
   text-decoration: underline;
-} */
+}
+
+a:active {
+  color: red;
+}
 </style>
