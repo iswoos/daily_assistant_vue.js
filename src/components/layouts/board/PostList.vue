@@ -22,7 +22,7 @@
             </a>
           </td>
           <td>{{ item.userId }}</td>
-          <td>{{ item.createdDateTime }}</td>
+          <td>{{ formatDateTime(item.createdDateTime) }}</td>
           <td>{{ item.viewCount }}</td>
           <td>{{ item.likesCount }}</td>
         </tr>
@@ -35,6 +35,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { FormatDateTime } from '@/utils/time/FormatDateTime'
 
 export default {
   name: 'PostList',
@@ -56,6 +57,14 @@ export default {
       }
     }
 
+    const formatDateTime = (dateTimeStr) => {
+      try {
+        return FormatDateTime.toDateTime(dateTimeStr)
+      } catch (error) {
+        return 'Invalid date/time'
+      }
+    }
+
     const routePost = (postId) => {
       router.push({ path: `/posts/${postId}`, params: { postId } })
     }
@@ -63,6 +72,7 @@ export default {
     return {
       postList,
       routePost,
+      formatDateTime,
       getPostList,
     }
   },

@@ -25,6 +25,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { FormatDateTime } from '@/utils/time/FormatDateTime'
 
 export default {
   name: 'GetPost',
@@ -55,8 +56,11 @@ export default {
     }
 
     const formatDateTime = (dateTimeStr) => {
-      const dateTime = new Date(dateTimeStr)
-      return `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`
+      try {
+        return FormatDateTime.toDateTime(dateTimeStr)
+      } catch (error) {
+        return 'Invalid date/time'
+      }
     }
 
     return {
