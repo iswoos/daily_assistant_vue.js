@@ -28,7 +28,8 @@ export default {
         const response = await axios.get(
           `http://localhost:8082/comments/${postId}`,
         )
-        commentList.value = response.data
+        console.log(response)
+        commentList.value = response.data.data
       } catch (error) {
         error.value = 'invalid'
       }

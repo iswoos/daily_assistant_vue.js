@@ -51,7 +51,8 @@ export default {
     const getPostList = async () => {
       try {
         const response = await axios.get('http://localhost:8082/posts')
-        postList.value = response.data
+        console.log(response)
+        postList.value = response.data.data
       } catch (error) {
         error.value = 'invalid'
       }

@@ -48,7 +48,7 @@ export default {
         const response = await axios.get(
           `http://localhost:8082/posts/${postId}`,
         )
-        post.value = response.data
+        post.value = response.data.data
         emit('postUserId', post.value.userId)
       } catch (error) {
         error.value = 'invalid'
