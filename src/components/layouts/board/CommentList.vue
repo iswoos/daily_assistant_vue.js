@@ -29,7 +29,7 @@ export default {
           `http://localhost:8082/comments/${postId}`,
         )
         console.log(response)
-        commentList.value = response.data.data
+        commentList.value = response.data
       } catch (error) {
         error.value = 'invalid'
       }

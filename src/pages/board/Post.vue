@@ -14,6 +14,7 @@
     <button @click="likesPost">추천</button>
     <br />
     <button @click="writePost">글쓰기</button>
+    <BottomNavigationBar />
   </div>
 </template>
 <script>
@@ -23,12 +24,14 @@ import GetPost from '@/components/layouts/board/GetPost.vue'
 import CommentList from '@/components/layouts/board/CommentList.vue'
 import { JsonStorage } from '@/utils/storage/JsonStorage'
 import axios from 'axios'
+import BottomNavigationBar from '@/components/layouts/BottomNavigationBar.vue'
 
 export default {
   name: 'PostPage',
   components: {
     GetPost,
     CommentList,
+    BottomNavigationBar,
   },
   setup() {
     const router = useRouter()
