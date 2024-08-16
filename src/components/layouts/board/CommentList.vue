@@ -2,7 +2,7 @@
   <div class="comment-container" v-if="commentList && commentList.length">
     "asdf"
   </div>
-  <div v-else class="loading">Loading...</div>
+  <div v-else class="loading">댓글리스트 빈칸 뜨게 노출하자</div>
 </template>
 
 <script>
