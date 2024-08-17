@@ -15,8 +15,8 @@
       <p>{{ post.content }}</p>
     </div>
     <div class="post-footer">
-      <p><strong>조회수:</strong> {{ post.view_count }}</p>
-      <p><strong>추천 수:</strong> {{ post.likes_count }}</p>
+      <p><strong>조회수:</strong> {{ post.viewCount }}</p>
+      <p><strong>추천 수:</strong> {{ post.likesCount }}</p>
     </div>
   </div>
   <div v-else class="loading">Loading...</div>
@@ -25,6 +25,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { FormatDateTime } from '@/utils/time/FormatDateTime'
 
 export default {
   name: 'GetPost',
@@ -47,7 +48,7 @@ export default {
         const response = await axios.get(
           `http://localhost:8082/posts/${postId}`,
         )
-        post.value = response.data
+        post.value = response.data.data
         emit('postUserId', post.value.userId)
       } catch (error) {
         error.value = 'invalid'
@@ -55,8 +56,11 @@ export default {
     }
 
     const formatDateTime = (dateTimeStr) => {
-      const dateTime = new Date(dateTimeStr)
-      return `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`
+      try {
+        return FormatDateTime.toDateTime(dateTimeStr)
+      } catch (error) {
+        return 'Invalid date/time'
+      }
     }
 
     return {

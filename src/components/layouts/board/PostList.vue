@@ -15,16 +15,16 @@
       <tbody>
         <tr v-for="item in postList" :key="item.id">
           <td>{{ item.id }}</td>
-          <td>{{ item.category }}</td>
+          <td>{{ item.postCategory }}</td>
           <td>
             <a href="#" @click.prevent="routePost(item.id)">
               {{ item.title }}
             </a>
           </td>
           <td>{{ item.userId }}</td>
-          <td>{{ item.createdDateTime }}</td>
-          <td>{{ item.view_count }}</td>
-          <td>{{ item.likes_count }}</td>
+          <td>{{ formatDateTime(item.createdDateTime) }}</td>
+          <td>{{ item.viewCount }}</td>
+          <td>{{ item.likesCount }}</td>
         </tr>
       </tbody>
     </table>
@@ -35,6 +35,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { FormatDateTime } from '@/utils/time/FormatDateTime'
 
 export default {
   name: 'PostList',
@@ -50,9 +51,18 @@ export default {
     const getPostList = async () => {
       try {
         const response = await axios.get('http://localhost:8082/posts')
-        postList.value = response.data
+        console.log(response)
+        postList.value = response.data.data
       } catch (error) {
         error.value = 'invalid'
+      }
+    }
+
+    const formatDateTime = (dateTimeStr) => {
+      try {
+        return FormatDateTime.toDateTime(dateTimeStr)
+      } catch (error) {
+        return 'Invalid date/time'
       }
     }
 
@@ -63,6 +73,7 @@ export default {
     return {
       postList,
       routePost,
+      formatDateTime,
       getPostList,
     }
   },
@@ -96,12 +107,21 @@ export default {
   text-align: center;
 }
 
-a {
+a:link {
   color: black;
   text-decoration: none;
 }
 
+a:visited {
+  color: green;
+}
+
 a:hover {
+  color: blue;
   text-decoration: underline;
+}
+
+a:active {
+  color: red;
 }
 </style>

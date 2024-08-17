@@ -1,6 +1,10 @@
 <template>
-  <div>asdf</div>
+  <div class="comment-container" v-if="commentList && commentList.length">
+    "asdf"
+  </div>
+  <div v-else class="loading">댓글리스트 빈칸 뜨게 노출하자</div>
 </template>
+
 <script>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
@@ -13,6 +17,24 @@ export default {
     },
   },
   setup(props) {
+    const commentList = ref(null)
+
+    onMounted(() => {
+      getCommentList(props.postId)
+    })
+
+    const getCommentList = async (postId) => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8082/comments/${postId}`,
+        )
+        console.log(response)
+        commentList.value = response.data
+      } catch (error) {
+        error.value = 'invalid'
+      }
+    }
+
     return {}
   },
 }
