@@ -50,7 +50,7 @@ export default {
     const modifyPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8082/posts/${postId.value}/likes`,
+          `http://localhost:8082/posts/${postId.value}`,
         )
         router.push({ path: '/modify/post', state: { post: response.data } })
       } catch (error) {
