@@ -106,12 +106,25 @@ export default {
     const submit = async () => {
       try {
         const formData = new FormData()
-        formData.append('title', title.value)
-        formData.append('content', content.value)
-        formData.append('postCategory', selectedCategory.value)
+        const postData = {
+          title: title.value,
+          content: content.value,
+          postCategory: selectedCategory.value,
+        }
+
+        if (!isModify.value) {
+          postData.userId = JsonStorage.get('user').userId
+        }
+
+        formData.append(
+          'post',
+          new Blob([JSON.stringify(postData)], { type: 'application/json' }),
+        )
+
         imageFiles.value.forEach((file) => {
           formData.append('images', file)
         })
+
         if (isModify.value) {
           await axios.patch(
             `http://localhost:8082/posts/${postId.value}`,
@@ -123,7 +136,6 @@ export default {
             },
           )
         } else {
-          formData.append('userId', JsonStorage.get('user').userId)
           await axios.post('http://localhost:8082/posts', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
