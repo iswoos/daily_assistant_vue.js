@@ -104,6 +104,7 @@ export default {
     }
 
     const submit = async () => {
+      let response
       try {
         const formData = new FormData()
         const postData = {
@@ -126,7 +127,7 @@ export default {
         })
 
         if (isModify.value) {
-          await axios.patch(
+          response = await axios.patch(
             `http://localhost:8082/posts/${postId.value}`,
             formData,
             {
@@ -136,16 +137,29 @@ export default {
             },
           )
         } else {
-          await axios.post('http://localhost:8082/posts', formData, {
+          response = await axios.post('http://localhost:8082/posts', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           })
         }
+
+        const preSignedUrls = response.data.data.imageUrls
+        await Promise.all(
+          imageFiles.value.map((file, index) => {
+            const presignedUrl = preSignedUrls[index]
+            return axios.put(presignedUrl, file, {
+              headers: {
+                'Content-Type': file.type,
+              },
+            })
+          }),
+        )
+        alert('게시글이 성공적으로 등록되었습니다.')
+        router.push('/board')
       } catch (error) {
         alert('업로드가 실패하였습니다.')
       }
-      router.push('/board')
     }
 
     return {
