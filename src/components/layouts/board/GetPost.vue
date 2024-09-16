@@ -8,9 +8,19 @@
         {{ formatDateTime(post.createdDateTime) }}
       </p>
     </div>
-    <div class="post-image">
-      <img :src="post.image" alt="Post Image" />
+
+    <div class="post-images" v-if="post.imageUrls && post.imageUrls.length">
+      <h3>첨부된 이미지:</h3>
+      <div class="image-list">
+        <img
+          v-for="(image, index) in post.imageUrls"
+          :key="index"
+          :src="image"
+          alt="Post Image"
+        />
+      </div>
     </div>
+
     <div class="post-content">
       <p>{{ post.content }}</p>
     </div>
@@ -150,5 +160,21 @@ export default {
   position: absolute;
   bottom: 0;
   width: 100%;
+}
+
+.post-images {
+  margin-bottom: 20px;
+}
+
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-list img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
 </style>
