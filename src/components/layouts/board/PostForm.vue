@@ -80,8 +80,8 @@ export default {
     const postId = ref(null)
 
     onMounted(() => {
-      const postInfo = history.state.post
-      if (postInfo) {
+      if (history.state.post) {
+        const postInfo = history.state.post.data
         postId.value = postInfo.id
         title.value = postInfo.title
         content.value = postInfo.content
@@ -144,7 +144,10 @@ export default {
           })
         }
 
+        const imageFolderUUID = response.data.data.imageFolderUUID
+        console.log(imageFolderUUID)
         const preSignedUrls = response.data.data.imageUrls
+
         await Promise.all(
           imageFiles.value.map((file, index) => {
             const presignedUrl = preSignedUrls[index]
