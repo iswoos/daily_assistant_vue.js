@@ -144,8 +144,6 @@ export default {
           })
         }
 
-        const imageFolderUUID = response.data.data.imageFolderUUID
-        console.log(imageFolderUUID)
         const preSignedUrls = response.data.data.imageUrls
 
         await Promise.all(
@@ -161,7 +159,7 @@ export default {
         alert('게시글이 성공적으로 등록되었습니다.')
         router.push('/board')
       } catch (error) {
-        alert('업로드가 실패하였습니다.')
+        alert(error.response.data.message)
       }
     }
 
