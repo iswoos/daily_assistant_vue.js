@@ -1,7 +1,7 @@
 <template>
   <div class="comment-form">
     <textarea v-model="comment" placeholder="댓글을 입력하세요..." />
-    <button @click="submitComment">댓글 작성</button>
+    <button class="submit-comment" @click="submitComment">댓글 작성</button>
   </div>
 </template>
 
@@ -59,6 +59,11 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
+.submit-comment {
+  background-color: cornflowerblue;
+}
+
 textarea {
   margin-bottom: 10px;
   padding: 10px;
