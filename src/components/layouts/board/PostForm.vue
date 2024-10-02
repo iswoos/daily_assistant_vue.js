@@ -35,13 +35,23 @@
       </div>
       <div class="form-group">
         <label for="image">이미지 등록</label>
-        <input type="file" id="image" @change="imageUpload" accept="image/*" />
-        <img
-          v-if="image"
-          :src="image"
-          alt="업로드된 이미지가 표시되지 않습니다."
-          class="image-preview"
+        <input
+          type="file"
+          ref="imageFile"
+          id="image"
+          @change="imageUpload"
+          accept="image/*"
+          multiple
         />
+        <div v-if="imageUrls.length">
+          <img
+            v-for="(url, index) in imageUrls"
+            :key="index"
+            :src="url"
+            alt="업로드된 이미지"
+            class="image-preview"
+          />
+        </div>
       </div>
       <button type="submit" class="submit-button">
         {{ isModify ? '수정' : '작성' }}
@@ -61,7 +71,8 @@ export default {
   setup() {
     const title = ref('')
     const content = ref('')
-    const image = ref(null)
+    const imageFiles = ref([])
+    const imageUrls = ref([])
     const categories = ref(['일반', '팁', '정보', '기타'])
     const selectedCategory = ref('')
     const router = useRouter()
@@ -69,13 +80,13 @@ export default {
     const postId = ref(null)
 
     onMounted(() => {
-      const postInfo = history.state.post
-      if (postInfo) {
+      if (history.state.post) {
+        const postInfo = history.state.post.data
         postId.value = postInfo.id
         title.value = postInfo.title
         content.value = postInfo.content
         selectedCategory.value = postInfo.postCategory
-        image.value = postInfo.image
+        imageUrls.value = postInfo.image || []
         isModify.value = true
       }
     })
@@ -85,40 +96,78 @@ export default {
     }
 
     const imageUpload = (event) => {
-      const file = event.target.files[0]
-      if (file) {
-        image.value = URL.createObjectURL(file)
-      }
+      const files = event.target.files
+      imageFiles.value = Array.from(files)
+      imageUrls.value = imageFiles.value.map((file) =>
+        URL.createObjectURL(file),
+      )
     }
 
     const submit = async () => {
+      let response
       try {
+        const formData = new FormData()
+        const postData = {
+          title: title.value,
+          content: content.value,
+          postCategory: selectedCategory.value,
+        }
+
+        if (!isModify.value) {
+          postData.userId = JsonStorage.get('user').userId
+        }
+
+        formData.append(
+          'post',
+          new Blob([JSON.stringify(postData)], { type: 'application/json' }),
+        )
+
+        imageFiles.value.forEach((file) => {
+          formData.append('images', file)
+        })
+
         if (isModify.value) {
-          await axios.patch(`http://localhost:8082/posts/${postId.value}`, {
-            title: title.value,
-            content: content.value,
-            image: image.value,
-            postCategory: selectedCategory.value,
-          })
+          response = await axios.patch(
+            `http://localhost:8082/posts/${postId.value}`,
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          )
         } else {
-          await axios.post('http://localhost:8082/posts', {
-            title: title.value,
-            content: content.value,
-            image: image.value,
-            postCategory: selectedCategory.value,
-            userId: JsonStorage.get('user').userId,
+          response = await axios.post('http://localhost:8082/posts', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
           })
         }
+
+        const preSignedUrls = response.data.data.imageUrls
+
+        await Promise.all(
+          imageFiles.value.map((file, index) => {
+            const presignedUrl = preSignedUrls[index]
+            return axios.put(presignedUrl, file, {
+              headers: {
+                'Content-Type': file.type,
+              },
+            })
+          }),
+        )
+        alert('게시글이 성공적으로 등록되었습니다.')
+        router.push('/board')
       } catch (error) {
-        alert('업로드가 실패하였습니다.')
+        alert(error.response.data.message)
       }
-      router.push('/board')
     }
 
     return {
       title,
       content,
-      image,
+      imageFiles,
+      imageUrls,
       categories,
       selectedCategory,
       selectCategory,
@@ -199,9 +248,10 @@ export default {
 }
 
 .image-preview {
-  display: block;
+  display: inline-block;
   margin-top: 10px;
-  max-width: 50%;
+  margin-right: 10px;
+  max-width: 150px;
   height: auto;
   border: 1px solid #ddd;
   border-radius: 4px;
